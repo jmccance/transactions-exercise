@@ -101,6 +101,7 @@ private func makeRandomTransaction(before date: Date) -> TransactionData {
         }
 
     return TransactionData(
+        id: UUID().uuidString,
         type: type,
         createdAt: createdAt,
         title: title,

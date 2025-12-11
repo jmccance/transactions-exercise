@@ -1,4 +1,8 @@
 public struct TransactionData {
+
+    /// The unique identifier for this transaction
+    public let id: String
+
     /// The type of transaction.
     ///
     /// Should be one of "regular" or "income"

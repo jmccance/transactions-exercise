@@ -29,7 +29,7 @@ struct App {
                 print("-----")
             } while cursor != nil
         } catch {
-
+            print("Ruh-roh: \(error)")
         }
     }
 }
