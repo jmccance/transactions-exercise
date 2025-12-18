@@ -42,7 +42,7 @@ public struct MockTransactionClient: TransactionClient {
 
         for _ in 0..<20 {
             let transaction = makeRandomTransaction(before: date)
-            date = ISO8601DateFormatter().date(from: transaction.createdAt)!
+            date = transaction.createdAt
 
             guard date > startDate else { break }
             items.append(transaction)
@@ -62,23 +62,20 @@ public struct MockTransactionClient: TransactionClient {
 
 private func makeRandomTransaction(before date: Date) -> TransactionData {
 
-    let type = ["regular", "income"].randomElement()!
+    let type: TransactionType = TransactionType.allCases.randomElement()!
 
     let createdAt =
-        ISO8601DateFormatter()
-        .string(
-            from: date.addingTimeInterval(
-                // Randomly moved back between an hour and a week
-                -Double.random(in: 3600...604_800)
-            )
+        date.addingTimeInterval(
+            // Randomly moved back between an hour and a week
+            -Double.random(in: 3600...604_800)
         )
 
     let title =
         switch type {
-        case "income":
+        case .income:
             "Payroll"
 
-        case "regular": fallthrough
+        case .regular: fallthrough
         default:
             [
                 "Lyft",
@@ -93,12 +90,7 @@ private func makeRandomTransaction(before date: Date) -> TransactionData {
 
         }
 
-    let amount =
-        switch type {
-        case "regular": Double(Int.random(in: 1...9_999_99)) / 100.0
-        case "income": Double(Int.random(in: 1...9_999_99)) / 100.0
-        default: 42.0
-        }
+    let amount = Double(Int.random(in: 1...9_999_99)) / 100.0
 
     return TransactionData(
         id: UUID().uuidString,
